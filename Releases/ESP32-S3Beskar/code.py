@@ -82,7 +82,7 @@ SPI_SPEED      = 48000000               # How fast the SPI bus to the LCD operat
 """
 
 def DisplayName(name, hold, color, init_tm) :
-    ownerfont = bitmap_font.load_font("Alef-Bold-18.bdf")  # 18 point bitmap font
+    ownerfont = bitmap_font.load_font("fonts/Alef-Bold-18.bdf")  # 18 point bitmap font
     banner_text = label.Label(ownerfont, text=name, color=color)
     banner_text.x = int(((display.width - banner_text.bounding_box[2])/2)-1)
     banner_text.y = int(((display.height - banner_text.bounding_box[3])/2)+1)
@@ -172,11 +172,11 @@ else:
 display_bus = fourwire.FourWire(spi, command=tft_dc, chip_select=tft_cs, baudrate=SPI_SPEED, reset=lcd_rst, polarity=0, phase=0)
 if DISPLAY == "Pre-Beskar":
     display     = ST7789(display_bus, rotation=270, width=240, height=135, rowstart=40, colstart=53, auto_refresh=False, backlight_pin=lcd_light, brightness=0)
-    font        = bitmap_font.load_font("mandalor135.bdf")  # 135 pixel tall bitmap font
+    font        = bitmap_font.load_font("fonts/mandalor135.bdf")  # 135 pixel tall bitmap font
     offset      = 12
 elif DISPLAY == "Beskar":
     display     = ST7789(display_bus, rotation=0, width=240, height=240, rowstart=80, auto_refresh=False, backlight_pin=lcd_light, brightness=0)
-    font        = bitmap_font.load_font("mandalor165.bdf")  # 165 pixel tall bitmap font
+    font        = bitmap_font.load_font("fonts/mandalor165.bdf")  # 165 pixel tall bitmap font
     offset      = 14
 stage = displayio.Group()
 display.root_group = stage
@@ -231,7 +231,7 @@ if BATTERY_MON > 0 :
         vbat_voltage = AnalogIn(board.A1)
 
     # Create the second image centered on the display
-    lowbattImg, lowbattPal = adafruit_imageload.load("LowBatt.bmp", bitmap=displayio.Bitmap, palette=displayio.Palette)
+    lowbattImg, lowbattPal = adafruit_imageload.load("img/LowBatt.bmp", bitmap=displayio.Bitmap, palette=displayio.Palette)
     x = int(display.width - lowbattImg.width)
     y = int(display.height - lowbattImg.height)
     if x < 0 : x = 0
