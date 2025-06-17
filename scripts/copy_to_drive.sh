@@ -101,40 +101,10 @@ echo ""
 echo "Identifying files and folders to preserve..."
 PRESERVE_FILES=()
 
-# Check for boot_out.txt (CircuitPython system file)
-if [ -f "$MOUNT_POINT/boot_out.txt" ]; then
-    echo "Found boot_out.txt - will preserve"
-    PRESERVE_FILES+=("$MOUNT_POINT/boot_out.txt")
-fi
-
 # Check for sd folder
 if [ -d "$MOUNT_POINT/sd" ]; then
     echo "Found sd folder - will preserve"
     PRESERVE_FILES+=("$MOUNT_POINT/sd")
-fi
-
-# Check for .fseventsd folder (macOS system folder)
-if [ -d "$MOUNT_POINT/.fseventsd" ]; then
-    echo "Found .fseventsd folder - will preserve"
-    PRESERVE_FILES+=("$MOUNT_POINT/.fseventsd")
-fi
-
-# Check for .Trashes folder (macOS trash folder)
-if [ -d "$MOUNT_POINT/.Trashes" ]; then
-    echo "Found .Trashes folder - will preserve"
-    PRESERVE_FILES+=("$MOUNT_POINT/.Trashes")
-fi
-
-# Check for .metadata_never_index file (macOS system file)
-if [ -f "$MOUNT_POINT/.metadata_never_index" ]; then
-    echo "Found .metadata_never_index - will preserve"
-    PRESERVE_FILES+=("$MOUNT_POINT/.metadata_never_index")
-fi
-
-# Check for .Spotlight-V100 folder (macOS Spotlight index)
-if [ -d "$MOUNT_POINT/.Spotlight-V100" ]; then
-    echo "Found .Spotlight-V100 folder - will preserve"
-    PRESERVE_FILES+=("$MOUNT_POINT/.Spotlight-V100")
 fi
 
 # Create a temporary directory for preserved files
