@@ -41,7 +41,7 @@ from adafruit_debouncer import Debouncer
 # Set the display type
 #DISPLAY        = "Pre-Beskar"          # Adafruit 1.14" LCD display  https://www.adafruit.com/product/4383
 DISPLAY       = "Beskar"                # Adafruit 1.3" LCD display   https://www.adafruit.com/product/4313
-DISP_BRIGHT    = 80                     # How bright to make the display - 0% to 100%
+DISP_BRIGHT    = 90                     # How bright to make the display - 0% to 100%
 
 # Board being used
 BOARD_TYPE    = "ESP32-S3"              # ESP32-S3                  https://www.adafruit.com/product/5477
@@ -171,11 +171,11 @@ else:
 
 display_bus = fourwire.FourWire(spi, command=tft_dc, chip_select=tft_cs, baudrate=SPI_SPEED, reset=lcd_rst, polarity=0, phase=0)
 if DISPLAY == "Pre-Beskar":
-    display     = ST7789(display_bus, rotation=270, width=240, height=135, rowstart=40, colstart=53, auto_refresh=False, backlight_pin=lcd_light, brightness=0)
+    display     = ST7789(display_bus, rotation=90, width=240, height=135, rowstart=40, colstart=53, auto_refresh=False, backlight_pin=lcd_light, brightness=0)
     font        = bitmap_font.load_font("fonts/mandalor135.bdf")  # 135 pixel tall bitmap font
     offset      = 12
 elif DISPLAY == "Beskar":
-    display     = ST7789(display_bus, rotation=0, width=240, height=240, rowstart=80, auto_refresh=False, backlight_pin=lcd_light, brightness=0)
+    display     = ST7789(display_bus, rotation=180, width=240, height=240, rowstart=80, auto_refresh=False, backlight_pin=lcd_light, brightness=0)
     font        = bitmap_font.load_font("fonts/mandalor165.bdf")  # 165 pixel tall bitmap font
     offset      = 14
 stage = displayio.Group()
