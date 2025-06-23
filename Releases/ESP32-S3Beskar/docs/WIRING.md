@@ -2,6 +2,52 @@
 
 This guide provides detailed instructions for connecting the Adafruit 1.3" 240x240 Wide Angle TFT LCD Display with MicroSD (ST7789) to the Adafruit ESP32-S3 Feather.
 
+## Wiring Diagram
+
+```mermaid
+graph LR
+    %% Define nodes
+    ESP32[ESP32-S3 Feather]
+    LCD[1.3 inch TFT LCD Display]
+    SWITCH[Momentary Button]
+    POWER[Power Switch]
+    BATT[LiPo Battery]
+    
+    %% Define styles
+    classDef esp fill:#f9d71c,stroke:#333,stroke-width:2px
+    classDef lcd fill:#3498db,stroke:#333,stroke-width:2px
+    classDef switch fill:#2ecc71,stroke:#333,stroke-width:2px
+    classDef power fill:#e74c3c,stroke:#333,stroke-width:2px
+    classDef battery fill:#95a5a6,stroke:#333,stroke-width:2px
+    
+    %% Apply styles
+    class ESP32 esp
+    class LCD lcd
+    class SWITCH switch
+    class POWER power
+    class BATT battery
+    
+    %% Define connections
+    BATT -- "(+)" --> POWER
+    POWER -- "(+)" --> ESP32
+    BATT -- "(-)" --> ESP32
+    
+    ESP32 -- "3.3V → VIN" --> LCD
+    ESP32 -- "GND → GND" --> LCD
+    ESP32 -- "SCK → SCK" --> LCD
+    ESP32 -- "MO → SI" --> LCD
+    ESP32 -- "D6 → CS" --> LCD
+    ESP32 -- "D9 → DC" --> LCD
+    ESP32 -- "D5 → RST" --> LCD
+    ESP32 -- "D10 → LITE" --> LCD
+    ESP32 -- "MISO ← MISO" --> LCD
+    ESP32 -- "D4 → SD_CS" --> LCD
+    
+    ESP32 -- "D11" --> SWITCH
+    SWITCH -- "GND" --> ESP32
+```
+
+
 ## Components Required
 
 1. [Adafruit ESP32-S3 Feather](https://www.adafruit.com/product/5477)
@@ -9,6 +55,7 @@ This guide provides detailed instructions for connecting the Adafruit 1.3" 240x2
 3. Jumper wires or a custom PCB
 4. Optional: LiPo battery for portable operation
 5. Momentary push button switch (normally open)
+6. SPST power switch (for battery-powered configurations)
 
 ## Pin Connections
 
@@ -58,6 +105,8 @@ display = ST7789(
 - The display can be powered from the 3.3V output of the ESP32-S3 Feather.
 - When using a battery, monitor the battery level to prevent unexpected shutdowns.
 - The backlight brightness can be adjusted in the code to save power.
+- Use the power switch to completely disconnect the battery when the device is not in use to extend battery life.
+- For maximum power efficiency, consider implementing sleep modes in your code when the device is idle.
 
 ## Physical Installation
 
@@ -71,6 +120,8 @@ display = ST7789(
 - **Garbled display:** Verify SPI connections and ensure proper initialization in code.
 - **No backlight:** Check the LITE pin connection and brightness setting in code.
 - **SD card not detected:** Verify MISO and SD_CS connections if using the SD card functionality.
+- **No power to device:** Verify the power switch is in the ON position and check battery connections.
+- **Intermittent power issues:** Check for loose connections at the power switch terminals.
 
 ## Switch Connection
 
@@ -104,3 +155,33 @@ This functionality is useful for:
 The switch uses a pull-up resistor configuration, which means:
 - The input reads HIGH (True) when the button is NOT pressed
 - The input reads LOW (False) when the button IS pressed
+
+## Power Switch Connection
+
+A power switch is recommended for controlling power to the device, especially in battery-powered configurations:
+
+| Component 1 | Component 2 | Function |
+|-------------|-------------|----------|
+| LiPo Battery (+) | Power Switch | Power Input |
+| Power Switch | ESP32-S3 Feather (BAT) | Power Output |
+| LiPo Battery (-) | ESP32-S3 Feather (GND) | Ground |
+
+### Power Switch Recommendations
+
+1. **Switch Type:** SPST (Single Pole, Single Throw) toggle or slide switch
+2. **Current Rating:** At least 1A to handle peak current draws
+3. **Voltage Rating:** At least 5V for LiPo battery applications
+
+### Installation Tips
+
+1. Place the power switch in an easily accessible location on your project enclosure.
+2. Ensure all power connections are secure and properly insulated to prevent shorts.
+3. Consider adding strain relief to the battery and switch connections to prevent wire fatigue.
+4. For extended battery life, disconnect the battery when storing the device for long periods.
+
+### Power Management
+
+The power switch provides a simple way to completely disconnect the battery from the circuit, which:
+- Prevents battery drain when the device is not in use
+- Allows for safe battery replacement or maintenance
+- Provides an emergency cutoff in case of circuit malfunction
